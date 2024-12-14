@@ -1,0 +1,36 @@
+/* @import "~bootstrap/dist/css/bootstrap.css";  */
+.master-container::before {
+    background-image: url('../assets/sunny.png');
+    overflow: hidden;
+    content: "";
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.master-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 0.1rem);
+}
+
+#day-container, #day-detail-container {
+    width: 75%;
+    text-align: center;
+}
+#day-container {
+    height: 100px;
+    background-color: rgba(255,255,255,0);
+    border: none;
+}
+#day-detail-container {
+    height: 200px;
+}

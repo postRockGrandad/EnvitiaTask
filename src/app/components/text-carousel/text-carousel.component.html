@@ -1,0 +1,16 @@
+
+<div id="carousel" class="col-lg-12" style="padding: 0; text-align: center;">
+    <div class="col-lg-3 d-inline-block">
+        <span class="material-icons" role="button" (click)="prev()" [style.color]="carouselIndex > 0 ? 'black':'#c1bebe'">arrow_back_ios</span>
+    </div>
+    <div class="col-lg-3 d-inline-block">
+        <ng-container *ngFor="let item of carouselData; let i = index">
+            <div [style.display]="i === carouselIndex ? 'block': 'none'" >
+                <span> {{item}} </span>
+            </div>
+        </ng-container>            
+    </div>
+    <div class="col-lg-3 d-inline-block">
+        <span class="material-icons" role="button" (click)="next()" [style.color]="carouselIndex < carouselData.length -1 ? 'black':'#c1bebe'">arrow_forward_ios</span>
+    </div>
+</div>
