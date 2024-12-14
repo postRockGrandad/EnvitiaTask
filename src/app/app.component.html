@@ -1,12 +1,12 @@
 <div class="master-container" style="text-align: center;">
   <div id="day-container" class="card" style="margin-bottom: 1rem; flex-direction: row; overflow-x: auto;">
-    <div class="card" *ngFor="let item of ['test1', 'test2', 'test3', 'test4', 'test5']; let i = index" style="width: 17.5%; min-width: 120px; height: 100%; margin-left: 1.25%; margin-right: 1.25%;">
+    <div class="card" *ngFor="let item of forecastDays; let i = index" style="width: 17.5%; min-width: 120px; height: 100%; margin-left: 1.25%; margin-right: 1.25%;">
       <strong>{{item}}</strong>
     </div>
   </div>
   <div id="day-detail-container" class="card">
     <div class="card-header">
-      <text-carousel [data]="['test1', 'test2', 'test3', 'test4', 'test5']"></text-carousel>
+      <text-carousel [data]="forecastDays"></text-carousel>
     </div>
   </div>
 </div>
