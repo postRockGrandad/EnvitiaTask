@@ -1,7 +1,10 @@
-<div class="master-container" style="text-align: center;">
-  <div id="day-container" class="card" style="margin-bottom: 1rem; flex-direction: row; overflow-x: auto;">
-    <div class="card" *ngFor="let item of forecastDays; let i = index" style="width: 17.5%; min-width: 120px; height: 100%; margin-left: 1.25%; margin-right: 1.25%;">
-      <strong>{{item}}</strong>
+<div class="master-container">
+  <div id="day-container" class="card">
+    <div class="card day-card" *ngFor="let dayDate of forecastDays">
+      <strong>{{dayDate}}</strong>
+      <div class="card-body">
+        <img [src]="wmoMappings[forecast[dayDate].dailyWmoCode].day.image">
+      </div>
     </div>
   </div>
   <div id="day-detail-container" class="card">
