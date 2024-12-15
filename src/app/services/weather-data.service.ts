@@ -2,8 +2,19 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { finalize, map, Subject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import { WmoIconMapping } from './sys-data.service';
 
+export type WmoIconMapping = {
+  [key in number]: {
+    day: {
+      description: string,
+      image: string
+    }, 
+    night: {
+      description: string,
+      image: string
+    }
+  }
+};
 type ForecastResponse = {
   latitude: number,
   longitude: number,
