@@ -1,5 +1,5 @@
 
-<ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+<ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-pills">
     <ng-container *ngFor="let title of navTitles; let i = index;">
         <li [ngbNavItem]="i+1">
             <button ngbNavLink>{{title}}</button>

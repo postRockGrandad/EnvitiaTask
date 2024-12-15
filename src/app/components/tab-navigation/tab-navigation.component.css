@@ -1,5 +1,7 @@
 .nav-link {
     font-size: 14px;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    margin: 0.25rem;
 }

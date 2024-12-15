@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TextCarouselComponent } from './components/text-carousel/text-carousel.component';
-import { Forecast, ForecastState, HoursForecast, WeatherDataService } from './services/weather-data.service';
+import { Forecast, ForecastState, DayForecast, WeatherDataService } from './services/weather-data.service';
 import { Subscription } from 'rxjs';
 import { WmoIconMapping } from './services/sys-data.service';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,10 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   forecast: Forecast;
   forecastDays: Array<string> = [];
   wmoMappings: WmoIconMapping;
-  selectedDayForecast: {
-      dailyWmoCode: number
-      hours: HoursForecast 
-    };
+  selectedDayForecast: DayForecast
 
   constructor(
     protected data: WeatherDataService, 

@@ -4,8 +4,7 @@ import { finalize, map, Subject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { WmoIconMapping } from './sys-data.service';
 
-const api_url: string = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weather_code&hourly=weather_code&forecast_days=5&timezone=UTC";
-export type ForecastResponse = {
+type ForecastResponse = {
   latitude: number,
   longitude: number,
   generationtime_ms: number,
@@ -30,23 +29,23 @@ export type ForecastResponse = {
     weather_code: number
   }
 }
-export type HoursForecast = Array<{
+type HourForecast = Array<{
   time: string,
   hourlyWmoCode: number
 }>;
-
+export type DayForecast = {
+  dailyWmoCode: number
+  hours: HourForecast 
+}
 export type Forecast = {
-  [key in string]: {
-    dailyWmoCode: number
-    hours: HoursForecast 
-  }
+  [key in string]: DayForecast
 };
-
 export type ForecastState = {
   forecast?: Forecast,
   error?: string,
   warning?: string
 }
+const api_url: string = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weather_code&hourly=weather_code&forecast_days=5&timezone=UTC";
 
 @Injectable({
   providedIn: 'root'
@@ -373,8 +372,8 @@ export class WeatherDataService {
           if(Object.keys(forecast).length === 0){
             state.warning = "No data found";
           };
-          this.forecast$.next(state);
           console.log(state);
+          this.forecast$.next(state);
         },
         error: err => { 
           this.forecast$.next({error: err})
