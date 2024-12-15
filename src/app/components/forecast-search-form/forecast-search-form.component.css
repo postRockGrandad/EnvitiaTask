@@ -1,3 +1,7 @@
+.col-lg-12 {
+    width: 100%;
+}
+
 #view_forecast_btn, input {
     border-radius: 5px;
     height: 36px;
@@ -13,9 +17,9 @@
     margin-top: 1.5rem;
 }
 #view_forecast_btn:disabled {
-    background-color: var(--disabled-color);
-    border-color: var(--disabled-border-color);
-    color: var(--disabled-text-color);
+    background-color: var(--disabled-colour);
+    border-color: var(--disabled-border-colour);
+    color: var(--disabled-text-colour);
 }
 
 .col-lg-4.d-inline-block {
@@ -24,4 +28,7 @@
 
 .input-validator, input {
     max-width: 200px;
+}
+.nput-validator {
+    margin-bottom: 0;
 }

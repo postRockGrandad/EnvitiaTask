@@ -1,11 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
 :root {
-    --transparent: rgba(255,255,255,0);
     --btn-green: #32df32;
     --invalid-red: #c50000;
-    --disabled-color: #bbbbbb;
-    --disabled-border-color: #a7a7a7;
-    --disabled-text-color: #6d6b6b;
+    --transparent: rgba(255,255,255,0);
+
+    --disabled-colour: #bbbbbb;
+    --disabled-border-colour: #a7a7a7;
+    --disabled-text-colour: #6d6b6b;
 }
 
 body {

@@ -8,7 +8,14 @@
         <div class="card-body">
           <img [src]="wmoMappings[forecast[dayDate].dailyWmoCode].day.image">
         </div>
-        <strong>{{forecast[dayDate].dailyTemp | displayTemp}}</strong>
+        <strong style="margin-bottom: 0.5rem;">
+          <span class="d-inline-block">
+            <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">thermostat</span>{{forecast[dayDate].dailyMin | displayTemp}}
+          </span>
+          <span class="d-inline-block">
+            <span class="material-icons" style="color: #7878f3; vertical-align: text-bottom;">thermostat</span>{{forecast[dayDate].dailyMax | displayTemp}}
+          </span>
+        </strong>
       </div>
     </div>
     <div id="day-detail-container" class="card">  

@@ -42,12 +42,16 @@
     text-align: center;
 }
 #day-container {
-    height: 185px;
+    height: 220px;
     background-color: var(--transparent);
     border: none;
     margin-bottom: 1rem; 
     flex-direction: row; 
     overflow-x: auto;
+}
+#day-container .card-body {
+    display: flex;
+    justify-content: center;
 }
 
 #day-detail-container {

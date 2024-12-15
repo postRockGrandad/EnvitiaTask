@@ -14,7 +14,9 @@ type ForecastResponse = {
   elevation: number,
   daily?: {
     time: Array<string>,
-    weather_code: Array<number>
+    weather_code: Array<number>,
+    temperature_2m_max: Array<number>,
+    temperature_2m_min: Array<number>
   },
   daily_units: {
     time: string,
@@ -37,7 +39,8 @@ type HourForecast = Array<{
 }>;
 export type DayForecast = {
   dailyWmoCode: number,
-  dailyTemp: number,
+  dailyMax: number,
+  dailyMin: number,
   hours: HourForecast 
 }
 export type Forecast = {
@@ -48,7 +51,7 @@ export type ForecastState = {
   error?: string,
   warning?: string
 }
-const api_url: string = "https://api.open-meteo.com/v1/forecast?daily=weather_code&hourly=weather_code,temperature_2m&forecast_days=5&timezone=UTC";
+const api_url: string = "https://api.open-meteo.com/v1/forecast?daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=weather_code,temperature_2m&forecast_days=5&timezone=UTC";
 
 @Injectable({
   providedIn: 'root'
@@ -354,6 +357,8 @@ export class WeatherDataService {
           forecastRes.body?.daily?.time.forEach((day: string, dayInForecast: number) => {
             //build dictionary of days in forecase, with top-level summary weather code
             let weatherCode: number = Number(forecastRes.body?.daily?.weather_code[dayInForecast]);
+            let tempMin: number = Number(forecastRes.body?.daily?.temperature_2m_min[dayInForecast]);
+            let tempMax: number = Number(forecastRes.body?.daily?.temperature_2m_max[dayInForecast]);
             //select the 24 hourly times + weathercodes from full forecast using day index
             //- day 0 => daily indexes 0-23 
             //- day 3 => daily indexes  48-71 
@@ -364,7 +369,8 @@ export class WeatherDataService {
             
             forecast[day] = { 
               dailyWmoCode: weatherCode, 
-              dailyTemp: (hoursTempData.reduce((acc: number, val: number) => acc + val, 0)) / 24, 
+              dailyMin: tempMin,
+              dailyMax: tempMax, 
               hours: []
             };
           
