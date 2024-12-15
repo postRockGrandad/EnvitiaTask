@@ -1,0 +1,16 @@
+#view_forecast_btn, input {
+    border-radius: 5px;
+    height: 36px;
+}
+
+#view_forecast_btn {
+    padding: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background-color: var(--btn-green);
+    max-width: 140px;
+}
+
+form {
+    margin-bottom: 1rem;
+}

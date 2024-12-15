@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TextCarouselComponent } from './components/text-carousel/text-carousel.component';
 import { Forecast, ForecastState, DayForecast, WeatherDataService } from './services/weather-data.service';
@@ -8,11 +8,13 @@ import { WmoIconMapping } from './services/sys-data.service';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TabNavigationComponent } from './components/tab-navigation/tab-navigation.component';
 import { DisplayDatePipe } from './pipes/display-date.pipe';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ForecastSearchFormComponent } from './components/forecast-search-form/forecast-search-form.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, TextCarouselComponent, TabNavigationComponent, NgbNavModule, DisplayDatePipe],
+  imports: [RouterOutlet, CommonModule, TextCarouselComponent, TabNavigationComponent, ForecastSearchFormComponent, NgbNavModule, DisplayDatePipe],
   providers: [WeatherDataService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -24,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('dailyWind') dailyWindTemp: TemplateRef<any>;
   dataSub: Subscription;
   forecast: Forecast;
-  forecastDays: Array<string> = [];
+  forecastDays: Array<string>;
   wmoMappings: WmoIconMapping;
   selectedDayForecast: DayForecast
 
@@ -32,13 +34,13 @@ export class AppComponent implements OnInit, OnDestroy {
     protected data: WeatherDataService, 
     protected cd: ChangeDetectorRef
   ){
-
+    this.forecastDays = [];
   }
 
   ngOnInit(): void {
     this.wmoMappings = this.data.WmoMappings;
     
-    this.data.getForecast();
+    // this.data.getForecast();
     this.dataSub = this.data.forecast$.subscribe(
       (state: ForecastState) => {
         this.forecast = state.forecast;

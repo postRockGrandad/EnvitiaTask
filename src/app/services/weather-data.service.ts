@@ -45,7 +45,7 @@ export type ForecastState = {
   error?: string,
   warning?: string
 }
-const api_url: string = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weather_code&hourly=weather_code&forecast_days=5&timezone=UTC";
+const api_url: string = "https://api.open-meteo.com/v1/forecast?daily=weather_code&hourly=weather_code&forecast_days=5&timezone=UTC";
 
 @Injectable({
   providedIn: 'root'
@@ -343,8 +343,8 @@ export class WeatherDataService {
     
    }
 
-  public getForecast(): void {
-    let sub = this.api.getUrl<ForecastResponse>(api_url)
+  public getForecast(latitude: number, longitude: number): void {
+    let sub = this.api.getUrl<ForecastResponse>(api_url + "&latitude="+latitude+"&longitude="+longitude)
       .pipe(
         map((forecastRes: HttpResponse<ForecastResponse>) => {
           let forecast: Forecast = {};

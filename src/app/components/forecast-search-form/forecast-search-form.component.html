@@ -1,0 +1,11 @@
+<form id="forecast-form" [formGroup]="forecastForm" (submit)="getForecast()" class="col-lg-12 d-inline-block" style="text-align: left;">
+    <div class="col-lg-4 d-inline-block">
+      <label class="d-block">Longitude</label>
+      <input formControlName="longitude" type="number">
+    </div>
+    <div class="col-lg-4 d-inline-block">
+      <label class="d-block">Latitude</label>
+      <input formControlName="latitude" type="number">
+    </div>
+    <button id="view_forecast_btn" role="button" type="submit"> View Forecast</button>
+</form>
