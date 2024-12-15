@@ -1,5 +1,5 @@
 <div class="master-container">
-  <forecast-search-form></forecast-search-form>
+  <forecast-search-form  style="margin-bottom: 1rem;"></forecast-search-form>
     
   <ng-container *ngIf="forecast">
     <div id="day-container" class="card">
@@ -10,19 +10,20 @@
         </div>
         <strong style="margin-bottom: 0.5rem;">
           <span class="d-inline-block">
-            <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">thermostat</span>{{forecast[dayDate].dailyMin | displayTemp}}
+            <span class="material-icons" style="color: #7878f3; vertical-align: text-bottom; font-size: 20px;">thermostat</span>{{forecast[dayDate].dailyMin | displayTemp}}
           </span>
           <span class="d-inline-block">
-            <span class="material-icons" style="color: #7878f3; vertical-align: text-bottom;">thermostat</span>{{forecast[dayDate].dailyMax | displayTemp}}
+            <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom; font-size: 20px;">thermostat</span>{{forecast[dayDate].dailyMax | displayTemp}}
           </span>
         </strong>
       </div>
     </div>
     <div id="day-detail-container" class="card" #dayDetailContainer>  
       <div class="card-header">
-        <text-carousel 
+        <!-- <text-carousel 
           [data]="forecastDays">
-        </text-carousel>
+        </text-carousel> -->
+        <strong>{{selectedDayForecast.date | displayDate}}</strong>
       </div>
       <tab-navigation
         [navTitles]="['Weather', 'Precipitation', 'Wind']"
@@ -46,7 +47,6 @@
 </ng-template>
 <ng-template ngbNavContent #dailyPrecipitation>
   <div class="card-body" style="overflow: auto; height: 180px;">
-    <!--  -->
     <precipitation-graph
       [container]="dayDetailContainer"
       [data]="selectedDayPrecipData"
@@ -55,16 +55,22 @@
 </ng-template>
 <ng-template ngbNavContent #dailyWind let-dayForecast="dayForecast">
   <div class="card-body" style="overflow: auto; display: flex; justify-content: left; flex-direction: row;">
-    <div *ngFor="let hourForecast of dayForecast?.hours" style="width: 100px;">
+    <div *ngFor="let hourForecast of dayForecast?.hours" style="width: 100px; min-width: 100px;">
       <strong>{{hourForecast?.time}}</strong>
-      <div class="card-body">
-        {{hourForecast}}
-        <!-- <img [src]="wmoMappings[hourForecast?.hourlyWmoCode]?.day.image"> -->
+      <div class="card-body" style="overflow: hidden;">
+        <ng-container [ngSwitch]="hourForecast.hourlyWindDirection">
+          <span *ngSwitchCase="'E'" class="material-icons" style="color: #7878f3; font-size: 52px; vertical-align: text-bottom;">arrow_forward</span>
+          <span *ngSwitchCase="'W'" class="material-icons" style="color: #7878f3; font-size: 52px; vertical-align: text-bottom;">arrow_back</span>
+          <span *ngSwitchCase="'S'" class="material-icons" style="color: #7878f3; font-size: 52px; vertical-align: text-bottom;">arrow_downward</span>
+          <span *ngSwitchCase="'N'" class="material-icons" style="color: #7878f3; font-size: 52px; vertical-align: text-bottom;">arrow_upward</span>
+          <!--  -->
+          <span *ngSwitchCase="'SE'" class="material-icons" style="color: #7878f3; font-size: 52px; vertical-align: text-bottom; transform: rotate(135deg);">arrow_upward</span>
+          <span *ngSwitchCase="'SW'" class="material-icons" style="color: #7878f3; font-size: 52px; vertical-align: text-bottom; transform: rotate(-135deg);">arrow_upward</span>
+          <span *ngSwitchCase="'NE'" class="material-icons" style="color: #7878f3; font-size: 52px; vertical-align: text-bottom; transform: rotate(45deg);">arrow_upward</span>
+          <span *ngSwitchCase="'NW'" class="material-icons" style="color: #7878f3; font-size: 52px; vertical-align: text-bottom; transform: rotate(-45deg);">arrow_upward</span>
+        </ng-container>
       </div>
-      <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">arrow_forward</span>
-      <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">arrow_back</span>
-      <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">arrow_downward</span>
-      <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">arrow_upward</span>
+      <strong>{{hourForecast?.hourlyWindSpeed | displayWindSpeed}}</strong>
     </div>
   </div>
 </ng-template>

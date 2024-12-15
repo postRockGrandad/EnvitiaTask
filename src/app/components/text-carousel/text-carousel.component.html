@@ -6,7 +6,7 @@
     <div class="col-lg-3 d-inline-block">
         <ng-container *ngFor="let item of carouselData; let i = index">
             <div [style.display]="i === carouselIndex ? 'block': 'none'">
-                <span> {{item}} </span>
+                <strong>{{item | displayDate}} </strong>
             </div>
         </ng-container>            
     </div>

@@ -27,7 +27,7 @@ type ForecastResponse = {
     time: Array<string>,
     weather_code: Array<number>,
     temperature_2m_max: Array<number>,
-    temperature_2m_min: Array<number>
+    temperature_2m_min: Array<number>,
   },
   daily_units: {
     time: string,
@@ -38,6 +38,8 @@ type ForecastResponse = {
     weather_code: Array<number>
     temperature_2m: Array<number>,
     precipitation: Array<number>
+    wind_speed_10m: Array<number>,
+    wind_direction_10m: Array<number>
   },
   hourly_units:  {
     time: string,
@@ -48,7 +50,9 @@ type HourForecast = Array<{
   time: string,
   hourlyWmoCode: number,
   hourlyTemp: number,
-  hourlyPrecip: number
+  hourlyPrecip: number,
+  hourlyWindSpeed: number,
+  hourlyWindDirection: 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
 }>;
 export type DayForecast = {
   date: string,
@@ -65,7 +69,7 @@ export type ForecastState = {
   error?: string,
   warning?: string
 }
-const api_url: string = "https://api.open-meteo.com/v1/forecast?daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=weather_code,temperature_2m,precipitation&forecast_days=5&timezone=UTC";
+const api_url: string = "https://api.open-meteo.com/v1/forecast?daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=weather_code,wind_speed_10m,wind_direction_10m,temperature_2m,precipitation&forecast_days=5&timezone=UTC";
 
 @Injectable({
   providedIn: 'root'
@@ -385,6 +389,12 @@ export class WeatherDataService {
   }
 
   private deserializeForecast(forecastRes: HttpResponse<ForecastResponse>): Forecast {
+    function angleToCompass(angle: number): 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW' {
+      var directions: Array<'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'> = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+      var index = Math.round(((angle %= 360) < 0 ? angle + 360 : angle) / 45) % 8;
+      return directions[index];
+    }
+
     let forecast: Forecast = {};
     forecastRes.body?.daily?.time.forEach((day: string, dayInForecast: number) => {
       //build dictionary of days in forecase, with top-level summary weather code
@@ -399,7 +409,9 @@ export class WeatherDataService {
       let hoursWeatherData:  Array<number> = forecastRes.body?.hourly.weather_code.filter(filterHoursByDayPosition<number>);
       let hoursTempData:  Array<number> = forecastRes.body?.hourly.temperature_2m.filter(filterHoursByDayPosition<number>);
       let hoursPrecipData:  Array<number> = forecastRes.body?.hourly.precipitation.filter(filterHoursByDayPosition<number>);
-      
+      let hoursWindSpeedData:  Array<number> = forecastRes.body?.hourly.wind_speed_10m.filter(filterHoursByDayPosition<number>);
+      let hoursWindDirectionData:  Array<number> = forecastRes.body?.hourly.wind_direction_10m.filter(filterHoursByDayPosition<number>);
+
       forecast[day] = { 
         date: day,
         dailyWmoCode: weatherCode, 
@@ -407,13 +419,14 @@ export class WeatherDataService {
         dailyMax: tempMax,
         hours: []
       };
-    
       hoursTimes?.forEach((time, k) => {
         forecast[day].hours.push({ 
           time: time.split("T")[1], 
           hourlyWmoCode: Number(hoursWeatherData?.[k]), 
           hourlyTemp: Number(hoursTempData?.[k]),
-          hourlyPrecip: Number(hoursPrecipData?.[k]) * 10
+          hourlyPrecip: Number(hoursPrecipData?.[k]) * 10,
+          hourlyWindSpeed: Number(hoursWindSpeedData?.[k]),
+          hourlyWindDirection: angleToCompass(Number(hoursWindDirectionData?.[k]))
         });
       });
 

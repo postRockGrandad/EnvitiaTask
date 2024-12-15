@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, SimpleChanges } from '@angular/core';
+import { DisplayDatePipe } from '../../pipes/display-date.pipe';
 
 @Component({
   selector: 'text-carousel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DisplayDatePipe],
   templateUrl: './text-carousel.component.html',
   styleUrl: './text-carousel.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
