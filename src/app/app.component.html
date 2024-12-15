@@ -1,15 +1,43 @@
 <div class="master-container">
   <div id="day-container" class="card">
     <div class="card day-card" *ngFor="let dayDate of forecastDays">
-      <strong>{{dayDate}}</strong>
+      <strong>{{dayDate | displayDate}}</strong>
       <div class="card-body">
         <img [src]="wmoMappings[forecast[dayDate].dailyWmoCode].day.image">
       </div>
     </div>
   </div>
-  <div id="day-detail-container" class="card">
+  <div id="day-detail-container" class="card">  
     <div class="card-header">
-      <text-carousel [data]="forecastDays"></text-carousel>
+      <text-carousel 
+        [data]="forecastDays">
+      </text-carousel>
     </div>
+    <tab-navigation
+      [navTitles]="['Weather', 'Precipitation', 'Wind']"
+      [navTemplates]="[dailyWeather, dailyPrecipitation, dailyWind]"
+      [navContext]="{dayForecast: selectedDayForecast}"
+    ></tab-navigation>
   </div>
 </div>
+
+<ng-template ngbNavContent #dailyWeather let-dayForecast="dayForecast">
+  <div class="card-body" style="overflow: auto; display: flex; justify-content: left; flex-direction: row;">
+      <div *ngFor="let hourForecast of dayForecast?.hours" style="width: 100px;">
+        <strong>{{hourForecast?.time}}</strong>
+        <div class="card-body">
+          <img [src]="wmoMappings[hourForecast?.hourlyWmoCode]?.day.image">
+        </div>
+      </div>
+  </div>
+</ng-template>
+<ng-template ngbNavContent #dailyPrecipitation>
+  <div class="card-body" style="overflow: auto;">
+    PRECIPTIATION
+  </div>
+</ng-template>
+<ng-template ngbNavContent #dailyWind>
+  <div class="card-body" style="overflow: auto;">
+    WIND
+  </div>
+</ng-template>

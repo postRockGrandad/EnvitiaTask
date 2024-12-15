@@ -1,0 +1,13 @@
+
+<ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+    <ng-container *ngFor="let title of navTitles; let i = index;">
+        <li [ngbNavItem]="i+1">
+            <button ngbNavLink>{{title}}</button>
+            <ng-template ngbNavContent>
+                <ng-container [ngTemplateOutlet]="navTemplates[i]" [ngTemplateOutletContext]="navContext"> </ng-container>
+            </ng-template>
+        </li>
+    </ng-container>
+    
+</ul>
+<div [ngbNavOutlet]="nav" class="mt-2"></div> 

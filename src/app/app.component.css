@@ -1,4 +1,7 @@
-/* @import "~bootstrap/dist/css/bootstrap.css";  */
+:root {
+    --transparent: rgba(255,255,255,0);
+}
+
 .master-container::before {
     background-image: url('../assets/sunny.png');
     overflow: hidden;
@@ -37,7 +40,7 @@
 }
 #day-container {
     height: 170px;
-    background-color: rgba(255,255,255,0);
+    background-color: var(--transparent);
     border: none;
     margin-bottom: 1rem; 
     flex-direction: row; 
@@ -45,5 +48,12 @@
 }
 
 #day-detail-container {
-    height: 200px;
+    height: auto;
+    max-height: 300px;
+}
+
+#day-detail-container .card-body {
+    padding: 0;
+    overflow: auto;
+    /* height: 200px; */
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { finalize, map, Subject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import { SysDataService, WmoIconMapping } from './sys-data.service';
+import { WmoIconMapping } from './sys-data.service';
 
 const api_url: string = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weather_code&hourly=weather_code&forecast_days=5&timezone=UTC";
 export type ForecastResponse = {
@@ -30,11 +30,11 @@ export type ForecastResponse = {
     weather_code: number
   }
 }
-export type HoursForecast = {
-  [key in string]: {
-    hourlyWmoCode: number
-  }
-};
+export type HoursForecast = Array<{
+  time: string,
+  hourlyWmoCode: number
+}>;
+
 export type Forecast = {
   [key in string]: {
     dailyWmoCode: number
@@ -352,7 +352,7 @@ export class WeatherDataService {
           forecastRes.body?.daily?.time.forEach((day: string, i: number) => {
             //build dictionary of days in forecase, with top-level summary weather code
             let weatherCode: number = Number(forecastRes.body?.daily?.weather_code[i]);
-            forecast[day] = { dailyWmoCode: weatherCode, hours: {}};
+            forecast[day] = { dailyWmoCode: weatherCode, hours: []};
 
             //select the 24 hourly times + weathercodes from full forecast using day index
             //- day 0 => daily indexes 0-23 
@@ -360,7 +360,7 @@ export class WeatherDataService {
             let hoursTimes: Array<string> = forecastRes.body?.hourly.time.filter((val, j) => j >= (i*24) && j < ((i*24)+24));
             let hoursData:  Array<number> = forecastRes.body?.hourly.weather_code.filter((val, j) => j >= (i*24) && j < ((i*24)+24));
             hoursTimes?.forEach((time, k) => {
-              forecast[day].hours[time.split("T")[1]] = { hourlyWmoCode: Number(hoursData?.[k]) };
+              forecast[day].hours.push({ time: time.split("T")[1], hourlyWmoCode: Number(hoursData?.[k]) });
             });
           });
           return forecast;
