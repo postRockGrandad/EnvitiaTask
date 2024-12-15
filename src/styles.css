@@ -2,8 +2,19 @@
 :root {
     --transparent: rgba(255,255,255,0);
     --btn-green: #32df32;
+    --invalid-red: #c50000;
+    --disabled-color: #bbbbbb;
+    --disabled-border-color: #a7a7a7;
+    --disabled-text-color: #6d6b6b;
 }
 
 body {
     font-family: monospace!important;
+}
+
+.invalid {
+    border: 2px solid var(--invalid-red);
+}
+.input-validator {
+    color: var(--invalid-red);
 }

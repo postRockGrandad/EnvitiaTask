@@ -8,7 +8,6 @@ import { WmoIconMapping } from './services/sys-data.service';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TabNavigationComponent } from './components/tab-navigation/tab-navigation.component';
 import { DisplayDatePipe } from './pipes/display-date.pipe';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ForecastSearchFormComponent } from './components/forecast-search-form/forecast-search-form.component';
 
 @Component({

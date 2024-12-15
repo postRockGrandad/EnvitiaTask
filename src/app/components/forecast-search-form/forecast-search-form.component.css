@@ -1,6 +1,7 @@
 #view_forecast_btn, input {
     border-radius: 5px;
     height: 36px;
+    width: 200px;
 }
 
 #view_forecast_btn {
@@ -9,8 +10,18 @@
     padding-right: 0.5rem;
     background-color: var(--btn-green);
     max-width: 140px;
+    margin-top: 1.5rem;
+}
+#view_forecast_btn:disabled {
+    background-color: var(--disabled-color);
+    border-color: var(--disabled-border-color);
+    color: var(--disabled-text-color);
 }
 
-form {
-    margin-bottom: 1rem;
+.col-lg-4.d-inline-block {
+    vertical-align: top;
+}
+
+.input-validator, input {
+    max-width: 200px;
 }

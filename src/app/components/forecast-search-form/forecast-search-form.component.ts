@@ -1,21 +1,24 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { WeatherDataService } from '../../services/weather-data.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'forecast-search-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './forecast-search-form.component.html',
   styleUrl: './forecast-search-form.component.css'
 })
 export class ForecastSearchFormComponent {
   forecastForm: FormGroup;
-  
-  get latitude(): number { return Number(this.forecastForm.get('latitude').value); }
-  set latitude(value: number) { this.forecastForm.get('latitude').setValue(value); }
-  get longitude(): number { return Number(this.forecastForm.get('longitude').value); }
-  set longitude(value: number) { this.forecastForm.get('longitude').setValue(value); }
+
+  get latitudeCtrl(): AbstractControl { return this.forecastForm.get('latitude'); }
+  get latitude(): number { return Number(this.latitudeCtrl.value); }
+  set latitude(value: number) { this.latitudeCtrl.setValue(value); }
+  get longitudeCtrl(): AbstractControl { return this.forecastForm.get('longitude'); }
+  get longitude(): number { return Number(this.longitudeCtrl.value); }
+  set longitude(value: number) { this.longitudeCtrl.setValue(value); }
   
   //could be in global Validators class if useful outside of this component
   latitudeInRange: ValidatorFn = (ctrl: AbstractControl): ValidationErrors | null => {
@@ -49,9 +52,6 @@ export class ForecastSearchFormComponent {
   getForecast(){
     if(this.forecastForm.valid){
       this.data.getForecast(this.latitude, this.longitude);
-    } else {
-      console.log(this.forecastForm);
     }
-    //recative errors already showing if not
   }
 }

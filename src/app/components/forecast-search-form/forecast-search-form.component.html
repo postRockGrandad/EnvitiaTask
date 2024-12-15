@@ -1,11 +1,25 @@
 <form id="forecast-form" [formGroup]="forecastForm" (submit)="getForecast()" class="col-lg-12 d-inline-block" style="text-align: left;">
     <div class="col-lg-4 d-inline-block">
-      <label class="d-block">Longitude</label>
-      <input formControlName="longitude" type="number">
+        <label class="d-block" for="longitude">Longitude</label>
+        <input formControlName="longitude" type="number" [ngClass]="longitudeCtrl.invalid && (longitudeCtrl.dirty || longitudeCtrl.touched) ? 'invalid' : ''">
     </div>
     <div class="col-lg-4 d-inline-block">
-      <label class="d-block">Latitude</label>
-      <input formControlName="latitude" type="number">
+        <label class="d-block" for="latitude">Latitude</label>
+        <input formControlName="latitude" type="number" [ngClass]="latitudeCtrl.invalid && (latitudeCtrl.dirty || latitudeCtrl.touched) ? 'invalid' : ''">
     </div>
-    <button id="view_forecast_btn" role="button" type="submit"> View Forecast</button>
+    <div class="col-lg-4 d-inline-block">
+        <button id="view_forecast_btn" [disabled]="forecastForm.invalid" role="button" type="submit"> View Forecast</button>
+    </div>
 </form>
+<div class="col-lg-12 d-inline-block" style="text-align: left;" id="forecast-form-validation-msgs">
+    <div class="col-lg-4 d-inline-block">
+        <ng-container *ngIf="longitudeCtrl.invalid && (longitudeCtrl.dirty || longitudeCtrl.touched)">
+            <p *ngIf="longitudeCtrl.errors['longitudeInRange']" class="input-validator">Must be between -180  and 180 </p>
+        </ng-container>
+    </div>
+    <div class="col-lg-4 d-inline-block" *ngIf="latitudeCtrl.invalid && (latitudeCtrl.dirty || latitudeCtrl.touched)">
+        <ng-container *ngIf="latitudeCtrl.invalid && (latitudeCtrl.dirty || latitudeCtrl.touched)">
+            <p *ngIf="latitudeCtrl.errors['latitudeInRange']" class="input-validator">Must be between -90 - and 90</p>
+        </ng-container>
+    </div>
+</div>
