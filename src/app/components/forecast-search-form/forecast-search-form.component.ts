@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { WeatherDataService } from '../../services/weather-data.service';
 import { CommonModule } from '@angular/common';
@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './forecast-search-form.component.html',
-  styleUrl: './forecast-search-form.component.css'
+  styleUrl: './forecast-search-form.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ForecastSearchFormComponent {
   forecastForm: FormGroup;

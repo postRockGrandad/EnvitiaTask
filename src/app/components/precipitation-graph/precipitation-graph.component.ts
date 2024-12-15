@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
@@ -6,7 +6,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   standalone: true,
   imports: [NgxChartsModule],
   templateUrl: './precipitation-graph.component.html',
-  styleUrl: './precipitation-graph.component.css'
+  styleUrl: './precipitation-graph.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PrecipitationGraphComponent {
   @Input('data') data: Array<any>;

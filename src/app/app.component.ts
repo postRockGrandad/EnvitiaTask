@@ -19,7 +19,7 @@ import { DisplayWindSpeedPipe } from './pipes/display-wind-speed.pipe';
   providers: [WeatherDataService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('dailyWeather') dailyWeatherTemp: TemplateRef<any>;
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.forecast = state.forecast;
         this.forecastDays = [...Object.keys(this.forecast)];
         this.selectDay(Object.keys(this.forecast)[0]);
-        
+        this.cd.detectChanges();
         console.log(this.selectedDayPrecipData);
         console.log(this.forecastDays, this.forecast);
         
@@ -67,5 +67,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.dataSub.unsubscribe();
+    this.cd.detach();
   }
 }
