@@ -36,7 +36,8 @@ type ForecastResponse = {
   hourly: {
     time: Array<string>,
     weather_code: Array<number>
-    temperature_2m: Array<number>
+    temperature_2m: Array<number>,
+    precipitation: Array<number>
   },
   hourly_units:  {
     time: string,
@@ -46,9 +47,11 @@ type ForecastResponse = {
 type HourForecast = Array<{
   time: string,
   hourlyWmoCode: number,
-  hourlyTemp: number
+  hourlyTemp: number,
+  hourlyPrecip: number
 }>;
 export type DayForecast = {
+  date: string,
   dailyWmoCode: number,
   dailyMax: number,
   dailyMin: number,
@@ -62,7 +65,7 @@ export type ForecastState = {
   error?: string,
   warning?: string
 }
-const api_url: string = "https://api.open-meteo.com/v1/forecast?daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=weather_code,temperature_2m&forecast_days=5&timezone=UTC";
+const api_url: string = "https://api.open-meteo.com/v1/forecast?daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=weather_code,temperature_2m,precipitation&forecast_days=5&timezone=UTC";
 
 @Injectable({
   providedIn: 'root'
@@ -363,35 +366,7 @@ export class WeatherDataService {
   public getForecast(latitude: number, longitude: number): void {
     let sub = this.api.getUrl<ForecastResponse>(api_url + "&latitude="+latitude+"&longitude="+longitude)
       .pipe(
-        map((forecastRes: HttpResponse<ForecastResponse>) => {
-          let forecast: Forecast = {};
-          forecastRes.body?.daily?.time.forEach((day: string, dayInForecast: number) => {
-            //build dictionary of days in forecase, with top-level summary weather code
-            let weatherCode: number = Number(forecastRes.body?.daily?.weather_code[dayInForecast]);
-            let tempMin: number = Number(forecastRes.body?.daily?.temperature_2m_min[dayInForecast]);
-            let tempMax: number = Number(forecastRes.body?.daily?.temperature_2m_max[dayInForecast]);
-            //select the 24 hourly times + weathercodes from full forecast using day index
-            //- day 0 => daily indexes 0-23 
-            //- day 3 => daily indexes  48-71 
-            function filterHoursByDayPosition<T>(value: T, index: number) { return index >= (dayInForecast*24) && index < ((dayInForecast*24)+24) }
-            let hoursTimes: Array<string> = forecastRes.body?.hourly.time.filter(filterHoursByDayPosition<string>);
-            let hoursWeatherData:  Array<number> = forecastRes.body?.hourly.weather_code.filter(filterHoursByDayPosition<number>);
-            let hoursTempData:  Array<number> = forecastRes.body?.hourly.temperature_2m.filter(filterHoursByDayPosition<number>);
-            
-            forecast[day] = { 
-              dailyWmoCode: weatherCode, 
-              dailyMin: tempMin,
-              dailyMax: tempMax, 
-              hours: []
-            };
-          
-            hoursTimes?.forEach((time, k) => {
-              forecast[day].hours.push({ time: time.split("T")[1], hourlyWmoCode: Number(hoursWeatherData?.[k]), hourlyTemp: Number(hoursTempData?.[k]) });
-            });
-
-          });
-          return forecast;
-        }),
+        map(this.deserializeForecast),
         finalize(()=>{ sub.unsubscribe(); })
       )
       .subscribe({
@@ -407,5 +382,42 @@ export class WeatherDataService {
           this.forecast$.next({error: err})
         }
       }) 
+  }
+
+  private deserializeForecast(forecastRes: HttpResponse<ForecastResponse>): Forecast {
+    let forecast: Forecast = {};
+    forecastRes.body?.daily?.time.forEach((day: string, dayInForecast: number) => {
+      //build dictionary of days in forecase, with top-level summary weather code
+      let weatherCode: number = Number(forecastRes.body?.daily?.weather_code[dayInForecast]);
+      let tempMin: number = Number(forecastRes.body?.daily?.temperature_2m_min[dayInForecast]);
+      let tempMax: number = Number(forecastRes.body?.daily?.temperature_2m_max[dayInForecast]);
+      //select the 24 hourly times + weathercodes from full forecast using day index
+      //- day 0 => daily indexes 0-23 
+      //- day 3 => daily indexes  48-71 
+      function filterHoursByDayPosition<T>(value: T, index: number) { return index >= (dayInForecast*24) && index < ((dayInForecast*24)+24) }
+      let hoursTimes: Array<string> = forecastRes.body?.hourly.time.filter(filterHoursByDayPosition<string>);
+      let hoursWeatherData:  Array<number> = forecastRes.body?.hourly.weather_code.filter(filterHoursByDayPosition<number>);
+      let hoursTempData:  Array<number> = forecastRes.body?.hourly.temperature_2m.filter(filterHoursByDayPosition<number>);
+      let hoursPrecipData:  Array<number> = forecastRes.body?.hourly.precipitation.filter(filterHoursByDayPosition<number>);
+      
+      forecast[day] = { 
+        date: day,
+        dailyWmoCode: weatherCode, 
+        dailyMin: tempMin,
+        dailyMax: tempMax,
+        hours: []
+      };
+    
+      hoursTimes?.forEach((time, k) => {
+        forecast[day].hours.push({ 
+          time: time.split("T")[1], 
+          hourlyWmoCode: Number(hoursWeatherData?.[k]), 
+          hourlyTemp: Number(hoursTempData?.[k]),
+          hourlyPrecip: Number(hoursPrecipData?.[k]) * 10
+        });
+      });
+
+    });
+    return forecast;
   }
 }

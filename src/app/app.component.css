@@ -28,12 +28,18 @@
     margin-left: 1.5%; 
     margin-right: 1.5%;
 }
+.day-card:hover {
+    cursor: pointer;
+}
 /* align first/last day-cards with edge of containing element */
 .day-card:nth-of-type(1){
     margin-left: 0;
 }
 .day-card:nth-of-type(5){
     margin-right: 0;
+}
+.day-card.selected {
+    border: 3px solid #6f6feb;
 }
 
 #day-container, #day-detail-container, forecast-search-form {

@@ -1,0 +1,13 @@
+
+<div style="width: 100%;" #graphContainer>
+    <ngx-charts-bar-vertical
+        [view]="[graphWidth, 180]"
+        [yScaleMax]="100"
+        [results]="data"
+        [gradient]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [showYAxisLabel]="true"
+        [yAxisLabel]="'Precipitation (%)'"
+></ngx-charts-bar-vertical>
+</div>

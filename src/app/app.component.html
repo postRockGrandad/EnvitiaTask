@@ -3,7 +3,7 @@
     
   <ng-container *ngIf="forecast">
     <div id="day-container" class="card">
-      <div class="card day-card" *ngFor="let dayDate of forecastDays">
+      <div class="card day-card" *ngFor="let dayDate of forecastDays" (click)="selectDay(dayDate)" [ngClass]="selectedDayForecast.date === dayDate ? 'selected' : ''">
         <strong>{{dayDate | displayDate}}</strong>
         <div class="card-body">
           <img [src]="wmoMappings[forecast[dayDate].dailyWmoCode].day.image">
@@ -18,7 +18,7 @@
         </strong>
       </div>
     </div>
-    <div id="day-detail-container" class="card">  
+    <div id="day-detail-container" class="card" #dayDetailContainer>  
       <div class="card-header">
         <text-carousel 
           [data]="forecastDays">
@@ -35,22 +35,36 @@
 
 <ng-template ngbNavContent #dailyWeather let-dayForecast="dayForecast">
   <div class="card-body" style="overflow: auto; display: flex; justify-content: left; flex-direction: row;">
-      <div *ngFor="let hourForecast of dayForecast?.hours" style="width: 100px;">
-        <strong>{{hourForecast?.time}}</strong>
-        <div class="card-body">
-          <img [src]="wmoMappings[hourForecast?.hourlyWmoCode]?.day.image">
-        </div>
-        <strong>{{hourForecast?.hourlyTemp | displayTemp}}</strong>
+    <div *ngFor="let hourForecast of dayForecast?.hours" style="width: 100px;">
+      <strong>{{hourForecast?.time}}</strong>
+      <div class="card-body">
+        <img [src]="wmoMappings[hourForecast?.hourlyWmoCode]?.day.image">
       </div>
+      <strong>{{hourForecast?.hourlyTemp | displayTemp}}</strong>
+    </div>
   </div>
 </ng-template>
 <ng-template ngbNavContent #dailyPrecipitation>
-  <div class="card-body" style="overflow: auto;">
-    PRECIPTIATION
+  <div class="card-body" style="overflow: auto; height: 180px;">
+    <!--  -->
+    <precipitation-graph
+      [container]="dayDetailContainer"
+      [data]="selectedDayPrecipData"
+    ></precipitation-graph>
   </div>
 </ng-template>
-<ng-template ngbNavContent #dailyWind>
-  <div class="card-body" style="overflow: auto;">
-    WIND
+<ng-template ngbNavContent #dailyWind let-dayForecast="dayForecast">
+  <div class="card-body" style="overflow: auto; display: flex; justify-content: left; flex-direction: row;">
+    <div *ngFor="let hourForecast of dayForecast?.hours" style="width: 100px;">
+      <strong>{{hourForecast?.time}}</strong>
+      <div class="card-body">
+        {{hourForecast}}
+        <!-- <img [src]="wmoMappings[hourForecast?.hourlyWmoCode]?.day.image"> -->
+      </div>
+      <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">arrow_forward</span>
+      <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">arrow_back</span>
+      <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">arrow_downward</span>
+      <span class="material-icons" style="color: #fd4d4d; vertical-align: text-bottom;">arrow_upward</span>
+    </div>
   </div>
 </ng-template>

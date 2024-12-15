@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TextCarouselComponent } from './components/text-carousel/text-carousel.component';
 import { Forecast, ForecastState, DayForecast, WeatherDataService, WmoIconMapping } from './services/weather-data.service';
@@ -9,11 +9,12 @@ import { TabNavigationComponent } from './components/tab-navigation/tab-navigati
 import { DisplayDatePipe } from './pipes/display-date.pipe';
 import { ForecastSearchFormComponent } from './components/forecast-search-form/forecast-search-form.component';
 import { DisplayTempPipe } from './pipes/display-temp.pipe';
+import { PrecipitationGraphComponent } from './components/precipitation-graph/precipitation-graph.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, TextCarouselComponent, TabNavigationComponent, ForecastSearchFormComponent, NgbNavModule, DisplayDatePipe, DisplayTempPipe],
+  imports: [RouterOutlet, CommonModule, PrecipitationGraphComponent, TextCarouselComponent, TabNavigationComponent, ForecastSearchFormComponent, NgbNavModule, DisplayDatePipe, DisplayTempPipe],
   providers: [WeatherDataService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -23,11 +24,16 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('dailyWeather') dailyWeatherTemp: TemplateRef<any>;
   @ViewChild('dailyPrecipitation') dailyPrecipitationTemp: TemplateRef<any>;
   @ViewChild('dailyWind') dailyWindTemp: TemplateRef<any>;
+  @ViewChild('dayDetailContainer') dayDetailContainer: ElementRef;
+
   dataSub: Subscription;
   forecast: Forecast;
   forecastDays: Array<string>;
   wmoMappings: WmoIconMapping;
   selectedDayForecast: DayForecast
+
+  selectedDayPrecipData: Array<any>;
+
 
   constructor(
     protected data: WeatherDataService, 
@@ -44,11 +50,18 @@ export class AppComponent implements OnInit, OnDestroy {
       (state: ForecastState) => {
         this.forecast = state.forecast;
         this.forecastDays = [...Object.keys(this.forecast)];
-        this.selectedDayForecast = this.forecast[Object.keys(this.forecast)[0]];
-
+        this.selectDay(Object.keys(this.forecast)[0]);
+        
+        console.log(this.selectedDayPrecipData);
         console.log(this.forecastDays, this.forecast);
+        
       } 
     )
+  }
+
+  selectDay(dayDate: string) {
+    this.selectedDayForecast = this.forecast[dayDate];
+    this.selectedDayPrecipData = Object.values(this.selectedDayForecast.hours).map((hourForecast) => { return { name: hourForecast.time, value: hourForecast.hourlyPrecip }; });
   }
 
   ngOnDestroy(): void {
