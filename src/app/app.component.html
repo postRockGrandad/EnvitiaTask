@@ -8,6 +8,7 @@
         <div class="card-body">
           <img [src]="wmoMappings[forecast[dayDate].dailyWmoCode].day.image">
         </div>
+        <strong>{{forecast[dayDate].dailyTemp | displayTemp}}</strong>
       </div>
     </div>
     <div id="day-detail-container" class="card">  
@@ -32,6 +33,7 @@
         <div class="card-body">
           <img [src]="wmoMappings[hourForecast?.hourlyWmoCode]?.day.image">
         </div>
+        <strong>{{hourForecast?.hourlyTemp | displayTemp}}</strong>
       </div>
   </div>
 </ng-template>

@@ -9,11 +9,12 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TabNavigationComponent } from './components/tab-navigation/tab-navigation.component';
 import { DisplayDatePipe } from './pipes/display-date.pipe';
 import { ForecastSearchFormComponent } from './components/forecast-search-form/forecast-search-form.component';
+import { DisplayTempPipe } from './pipes/display-temp.pipe';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, TextCarouselComponent, TabNavigationComponent, ForecastSearchFormComponent, NgbNavModule, DisplayDatePipe],
+  imports: [RouterOutlet, CommonModule, TextCarouselComponent, TabNavigationComponent, ForecastSearchFormComponent, NgbNavModule, DisplayDatePipe, DisplayTempPipe],
   providers: [WeatherDataService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
