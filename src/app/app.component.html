@@ -47,10 +47,13 @@
 </ng-template>
 <ng-template ngbNavContent #dailyPrecipitation>
   <div id="dailyPrecipitation" class="card-body">
-    <precipitation-graph
+    <bar-chart
       [container]="dayDetailContainer"
       [data]="selectedDayPrecipData"
-    ></precipitation-graph>
+      [yAxisLabel]="'Precipitation (%)'"
+      [xAxisLabel]="null"
+      [yMax]="100"
+    ></bar-chart>
   </div>
 </ng-template>
 <ng-template ngbNavContent #dailyWind let-dayForecast="dayForecast">

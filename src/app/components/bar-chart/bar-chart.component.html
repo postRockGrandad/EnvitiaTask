@@ -2,12 +2,14 @@
 <div id="graphContainer" #graphContainer>
     <ngx-charts-bar-vertical
         [view]="[graphWidth, 180]"
-        [yScaleMax]="100"
+        [yScaleMax]="yMax"
         [results]="data"
         [gradient]="false"
         [xAxis]="true"
         [yAxis]="true"
-        [showYAxisLabel]="true"
-        [yAxisLabel]="'Precipitation (%)'"
+        [showYAxisLabel]="yAxisLabel !== null"
+        [yAxisLabel]="yAxisLabel"
+        [showXAxisLabel]="xAxisLabel !== null"
+        [xAxisLabel]="xAxisLabel"
 ></ngx-charts-bar-vertical>
 </div>

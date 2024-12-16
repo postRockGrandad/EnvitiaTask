@@ -9,13 +9,13 @@ import { TabNavigationComponent } from './components/tab-navigation/tab-navigati
 import { DisplayDatePipe } from './pipes/display-date.pipe';
 import { ForecastSearchFormComponent } from './components/forecast-search-form/forecast-search-form.component';
 import { DisplayTempPipe } from './pipes/display-temp.pipe';
-import { PrecipitationGraphComponent } from './components/precipitation-graph/precipitation-graph.component';
 import { DisplayWindSpeedPipe } from './pipes/display-wind-speed.pipe';
+import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, PrecipitationGraphComponent, TextCarouselComponent, TabNavigationComponent, ForecastSearchFormComponent, NgbNavModule, DisplayDatePipe, DisplayTempPipe, DisplayWindSpeedPipe],
+  imports: [RouterOutlet, CommonModule, BarChartComponent, TextCarouselComponent, TabNavigationComponent, ForecastSearchFormComponent, NgbNavModule, DisplayDatePipe, DisplayTempPipe, DisplayWindSpeedPipe],
   providers: [WeatherDataService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
