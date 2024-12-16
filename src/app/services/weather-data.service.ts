@@ -98,7 +98,7 @@ export class WeatherDataService {
           if(Object.keys(forecast).length === 0){
             state.warning = "No data found";
           };
-          console.log(state);
+          
           this.forecast$.next(state);
         },
         error: err => { 

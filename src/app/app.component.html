@@ -18,7 +18,7 @@
         </strong>
       </div>
     </div>
-    <div id="day-detail-container" class="card" #dayDetailContainer>  
+    <div id="day-detail-container" class="card">  
       <div class="card-header">
         <!-- <text-carousel 
           [data]="forecastDays">
@@ -47,8 +47,7 @@
 </ng-template>
 <ng-template ngbNavContent #dailyPrecipitation>
   <div id="dailyPrecipitation" class="card-body">
-    <bar-chart
-      [container]="dayDetailContainer"
+    <bar-chart class="d-block"
       [data]="selectedDayPrecipData"
       [yAxisLabel]="'Precipitation (%)'"
       [xAxisLabel]="null"

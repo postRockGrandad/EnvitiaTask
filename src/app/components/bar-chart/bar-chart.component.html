@@ -1,7 +1,6 @@
 
 <div id="graphContainer" #graphContainer>
     <ngx-charts-bar-vertical
-        [view]="[graphWidth, 180]"
         [yScaleMax]="yMax"
         [results]="data"
         [gradient]="false"
@@ -11,5 +10,5 @@
         [yAxisLabel]="yAxisLabel"
         [showXAxisLabel]="xAxisLabel !== null"
         [xAxisLabel]="xAxisLabel"
-></ngx-charts-bar-vertical>
+    ></ngx-charts-bar-vertical>
 </div>

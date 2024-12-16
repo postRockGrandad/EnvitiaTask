@@ -17,8 +17,4 @@ export class TabNavigationComponent {
   @Input('navContext') navContext: { [key in string]: any };
 
   activeTab: number = 1;
-
-  ngOnChanges(){
-    console.log(this.navContext);
-  }
 }

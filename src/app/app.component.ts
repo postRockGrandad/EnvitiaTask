@@ -25,16 +25,13 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('dailyWeather') dailyWeatherTemp: TemplateRef<any>;
   @ViewChild('dailyPrecipitation') dailyPrecipitationTemp: TemplateRef<any>;
   @ViewChild('dailyWind') dailyWindTemp: TemplateRef<any>;
-  @ViewChild('dayDetailContainer') dayDetailContainer: ElementRef;
 
   dataSub: Subscription;
   forecast: Forecast;
   forecastDays: Array<string>;
   wmoIconMappings: WmoIconMapping;
   selectedDayForecast: DayForecast
-
   selectedDayPrecipData: Array<any>;
-
 
   constructor(
     protected data: WeatherDataService, 
@@ -53,16 +50,20 @@ export class AppComponent implements OnInit, OnDestroy {
         this.forecastDays = [...Object.keys(this.forecast)];
         this.selectDay(Object.keys(this.forecast)[0]);
         this.cd.detectChanges();
-        console.log(this.selectedDayPrecipData);
-        console.log(this.forecastDays, this.forecast);
-        
+        // console.log(this.selectedDayPrecipData);
+        // console.log(this.forecastDays, this.forecast);
       } 
     )
   }
 
   selectDay(dayDate: string) {
     this.selectedDayForecast = this.forecast[dayDate];
-    this.selectedDayPrecipData = Object.values(this.selectedDayForecast.hours).map((hourForecast) => { return { name: hourForecast.time, value: hourForecast.hourlyPrecip }; });
+    this.selectedDayPrecipData = Object.values(this.selectedDayForecast.hours).map((hourForecast) => { 
+      return { 
+        name: hourForecast.time,
+        value: hourForecast.hourlyPrecip
+      }; 
+    });
   }
 
   ngOnDestroy(): void {

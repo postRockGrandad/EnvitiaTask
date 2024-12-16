@@ -108,6 +108,11 @@ span[id$="_temps_max"]{
     /* height: 200px; */
 }
 
+bar-chart {
+    height: 100%; 
+    width: 100%;
+}
+
 .compass-icon {
     color: #7878f3; font-size: 52px; vertical-align: text-bottom;
 }
