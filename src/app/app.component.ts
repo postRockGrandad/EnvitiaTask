@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TextCarouselComponent } from './components/text-carousel/text-carousel.component';
-import { Forecast, ForecastState, DayForecast, WeatherDataService, WmoIconMapping } from './services/weather-data.service';
+import { Forecast, ForecastState, DayForecast, HourForecast, WeatherDataService, WmoIconMapping } from './services/weather-data.service';
 import { Subscription } from 'rxjs';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TabNavigationComponent } from './components/tab-navigation/tab-navigation.component';
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   forecastDays: Array<string>;
   wmoIconMappings: WmoIconMapping;
   selectedDayForecast: DayForecast
-  selectedDayPrecipData: Array<any>;
+  selectedDayHourlyData: HourForecast;
 
   constructor(
     protected data: WeatherDataService, 
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.forecastDays = [...Object.keys(this.forecast)];
         this.selectDay(Object.keys(this.forecast)[0]);
         this.cd.detectChanges();
-        // console.log(this.selectedDayPrecipData);
+        // console.log(this.selectedDayHourlyData);
         // console.log(this.forecastDays, this.forecast);
       } 
     )
@@ -58,12 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   selectDay(dayDate: string) {
     this.selectedDayForecast = this.forecast[dayDate];
-    this.selectedDayPrecipData = Object.values(this.selectedDayForecast.hours).map((hourForecast) => { 
-      return { 
-        name: hourForecast.time,
-        value: hourForecast.hourlyPrecip
-      }; 
-    });
+    this.selectedDayHourlyData = this.selectedDayForecast.hours;
   }
 
   ngOnDestroy(): void {

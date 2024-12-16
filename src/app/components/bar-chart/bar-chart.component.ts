@@ -10,20 +10,23 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BarChartComponent implements OnChanges {
-  @Input('data') data: Array<{name: string, value: number}>;
+  @Input('data') data: Array<{[key in string]: any}>;
+  @Input('dataXKey') xKey: string;
+  @Input('dataYKey') yKey: string;
   @Input('yAxisLabel') yAxisLabel: string;
   @Input('xAxisLabel') xAxisLabel: string;
   @Input('yMax') yMax: number;
 
   ngOnChanges(changes: SimpleChanges){
+    //re-structure data for graph on each input change
     if(changes['data'].currentValue?.length > 0) {
-      this.data = changes['data'].currentValue.map((datapoint: {name: string, value: number}) => { 
+      this.data = changes['data'].currentValue.map((datapoint: {[key in string]: any}) => { 
         return { 
-          name: datapoint.name,
-          // ngx-charts throws hundreds of unhandled d3 js errors trying to tween animate values of 0 on graph-data-change
+          name: datapoint[this.xKey],
+          // ngx-charts throws unhandled d3 js errors trying to tween-animate from values of 0 on graph-data change
           //- pad 0s to 1e-20 
-          //- resolves tweening issue but still shows value as 0 in graph 
-          value: datapoint.value === 0 ?  1e-20 : datapoint.value
+          //-- resolves tweening issue but still rounds to 0 in graph 
+          value: datapoint[this.yKey] === 0 ?  1e-20 : datapoint[this.yKey] 
         }; 
       });
     } 

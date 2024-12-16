@@ -48,7 +48,9 @@
 <ng-template ngbNavContent #dailyPrecipitation>
   <div id="dailyPrecipitation" class="card-body">
     <bar-chart class="d-block"
-      [data]="selectedDayPrecipData"
+      [data]="selectedDayHourlyData"
+      [dataXKey]="'time'"
+      [dataYKey]="'hourlyPrecip'"
       [yAxisLabel]="'Precipitation (%)'"
       [xAxisLabel]="null"
       [yMax]="100"

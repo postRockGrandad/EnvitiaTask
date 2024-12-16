@@ -47,7 +47,7 @@ type ForecastResponse = {
     weather_code: number
   }
 }
-type HourForecast = Array<{
+export type HourForecast = Array<{
   time: string,
   hourlyWmoCode: number,
   hourlyTemp: number,
