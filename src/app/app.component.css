@@ -47,6 +47,43 @@
     max-width: 1000px;
     text-align: center;
 }
+forecast-search-form {
+    margin-bottom: 1rem;
+}
+
+strong[id$="_temps"]{
+    margin-bottom: 0.5rem;
+}
+span[id$="_temps_min"], span[id$="_temps_max"] {
+    vertical-align: text-bottom; 
+    font-size: 20px;
+}
+span[id$="_temps_min"]{
+    color: #7878f3; 
+}
+span[id$="_temps_max"]{
+    color: #fd4d4d;
+}
+
+#dailyWeather, #dailyWind {
+    overflow: auto; display: flex; justify-content: left; flex-direction: row;
+}
+#dailyWeather div {
+    width: 100%;
+}
+#dailyWind div {
+    width: 100px; min-width: 100px;
+}
+#dailyWind div div {
+    overflow: hidden;
+}
+
+
+#dailyPrecipitation {
+    overflow: auto; 
+    height: 180px;
+}
+
 #day-container {
     height: 220px;
     background-color: var(--transparent);
@@ -69,4 +106,8 @@
     padding: 0;
     overflow: auto;
     /* height: 200px; */
+}
+
+.compass-icon {
+    color: #7878f3; font-size: 52px; vertical-align: text-bottom;
 }

@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
   dataSub: Subscription;
   forecast: Forecast;
   forecastDays: Array<string>;
-  wmoMappings: WmoIconMapping;
+  wmoIconMappings: WmoIconMapping;
   selectedDayForecast: DayForecast
 
   selectedDayPrecipData: Array<any>;
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.wmoMappings = this.data.WmoMappings;
+    this.wmoIconMappings = this.data._WmoMappings;
     
     // this.data.getForecast();
     this.dataSub = this.data.forecast$.subscribe(

@@ -1,4 +1,8 @@
 
+#carousel { 
+    padding: 0; 
+    text-align: center;
+}
 
 #carousel .col-lg-3, #carousel .col-lg-3 span.material-icons {
     vertical-align: middle;

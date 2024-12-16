@@ -1,5 +1,6 @@
 .col-lg-12 {
     width: 100%;
+    text-align: left;
 }
 
 #view_forecast_btn, input {
